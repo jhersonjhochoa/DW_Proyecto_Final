@@ -9,18 +9,11 @@ package models;
  *
  * @author Jhonatan
  */
-public class RolUsuario {
+public class Seccion {
     private int id;
     private String descripcion;
-
-    public RolUsuario(int id) {
-        this.id = id;
-    }
-
-    public RolUsuario(int id, String descripcion) {
-        this.id = id;
-        this.descripcion = descripcion;
-    }
+    private Grado grado;
+    private int anio;
 
     public int getId() {
         return id;
@@ -37,6 +30,21 @@ public class RolUsuario {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-    
+
+    public Grado getGrado() {
+        return grado;
+    }
+
+    public void setGrado(Grado grado) {
+        this.grado = grado;
+    }
+
+    public int getAnio() {
+        return anio;
+    }
+
+    public void setAnio(int anio) {
+        this.anio = anio;
+    }
     
 }

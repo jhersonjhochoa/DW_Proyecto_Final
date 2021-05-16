@@ -9,18 +9,9 @@ package models;
  *
  * @author Jhonatan
  */
-public class RolUsuario {
+public class NivelEducativo {
     private int id;
     private String descripcion;
-
-    public RolUsuario(int id) {
-        this.id = id;
-    }
-
-    public RolUsuario(int id, String descripcion) {
-        this.id = id;
-        this.descripcion = descripcion;
-    }
 
     public int getId() {
         return id;
@@ -37,6 +28,5 @@ public class RolUsuario {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-    
     
 }

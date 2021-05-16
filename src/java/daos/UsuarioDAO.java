@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import models.RolUsuario;
 import models.Usuario;
 
 /**
@@ -26,6 +27,7 @@ public class UsuarioDAO implements IUsuario {
     Connection con;
     PreparedStatement ps;
     ResultSet rs;
+    RolUsuarioDAO ruDAO = new RolUsuarioDAO();
 
     @Override
     public boolean login() {
@@ -35,7 +37,7 @@ public class UsuarioDAO implements IUsuario {
     @Override
     public boolean insert(Usuario u) {
         try {
-            String sql = "insert into usuario(rol, nombre, apellido, telefono, documento, password) values(?, ?, ?, ?, ?, ?)";
+            String sql = "insert into usuario(rol, nombre, apellido, telefono, documento, password, user) values(?, ?, ?, ?, ?, ?, ?)";
             con = cn.getCon();
             ps = con.prepareStatement(sql);
             ps.setInt(1, u.getRol().getId());
@@ -43,7 +45,8 @@ public class UsuarioDAO implements IUsuario {
             ps.setString(3, u.getApellido());
             ps.setString(4, u.getTelefono());
             ps.setString(5, u.getDocumento());
-            ps.setString(6, u.getPassword());
+            ps.setString(6, u.getDocumento());
+            ps.setString(7, u.getUser());
             ps.executeUpdate();
             return true;
         } catch (SQLException ex) {
@@ -55,7 +58,7 @@ public class UsuarioDAO implements IUsuario {
     @Override
     public boolean update(Usuario u) {
         try {
-            String sql = "update usuario set rol=?, nombre = ?, apellido = ?, telefono = ?, documento = ?, password = ?";
+            String sql = "update usuario set rol=?, nombre = ?, apellido = ?, telefono = ?, documento = ? where id = ?";
             con = cn.getCon();
             ps = con.prepareStatement(sql);
             ps.setInt(1, u.getRol().getId());
@@ -63,7 +66,7 @@ public class UsuarioDAO implements IUsuario {
             ps.setString(3, u.getApellido());
             ps.setString(4, u.getTelefono());
             ps.setString(5, u.getDocumento());
-            ps.setString(6, u.getPassword());
+            ps.setInt(6, u.getId());
             ps.executeUpdate();
             return true;
         } catch (SQLException ex) {
@@ -98,7 +101,8 @@ public class UsuarioDAO implements IUsuario {
             Usuario u = new Usuario();
             while (rs.next()) {
                 u.setId(rs.getInt("id"));
-                // u.setRol( oibtener el rol con el id);  // por hacer
+                RolUsuario ru = ruDAO.selectById(rs.getInt("rol"));
+                u.setRol(ru);
                 u.setNombre(rs.getString("nombre"));
                 u.setApellido(rs.getString("apellido"));
                 u.setTelefono(rs.getString("telefono"));
@@ -125,7 +129,8 @@ public class UsuarioDAO implements IUsuario {
             while (rs.next()) {
                 u = new Usuario();
                 u.setId(rs.getInt("id"));
-                // u.setRol( oibtener el rol con el id);  // por hacer
+                RolUsuario ru = ruDAO.selectById(rs.getInt("rol"));
+                u.setRol(ru);
                 u.setNombre(rs.getString("nombre"));
                 u.setApellido(rs.getString("apellido"));
                 u.setTelefono(rs.getString("telefono"));

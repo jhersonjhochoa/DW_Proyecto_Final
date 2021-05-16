@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -17,11 +18,11 @@
 <!-- Site wrapper -->
 <div class="wrapper">
   <!-- Navbar -->
-  <%@include file="componentes/navbar.jsp" %>
+  <%@include file="/componentes/navbar.jsp" %>
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
-  <%@include file="componentes/sidebar.jsp" %>
+  <%@include file="/componentes/sidebar.jsp" %>
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -75,7 +76,7 @@
   </div>
   <!-- /.content-wrapper -->
 
-  <%@include file="componentes/footer.jsp" %>
+  <%@include file="/componentes/footer.jsp" %>
 
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
@@ -85,6 +86,6 @@
 </div>
 <!-- ./wrapper -->
 
-<%@include file="componentes/js.jsp" %>
+<%@include file="/componentes/js.jsp" %>
 </body>
 </html>
