@@ -22,18 +22,17 @@ import models.NivelEducativo;
  * @author Jhonatan
  */
 public class GradoDAO implements IGrado{
-    ConnectionDB cn = new ConnectionDB();
+
     Connection con;
     PreparedStatement ps;
     ResultSet rs;
-    GradoDAO gDAO = new GradoDAO();
     NivelEducativoDAO neDAO = new NivelEducativoDAO();
 
     @Override
     public boolean insert(Grado g) {
         try {
             String sql = "insert into grado(nivel, grado) values(?, ?)";
-            con = cn.getCon();
+            con = ConnectionDB.newInstanceDB().getCon();
             ps = con.prepareStatement(sql);
             ps.setInt(1, g.getNivel().getId());
             ps.setInt(2, g.getGrado());
@@ -49,7 +48,7 @@ public class GradoDAO implements IGrado{
     public boolean update(Grado g) {
         try {
             String sql = "update grado set nivel=?, grado = ? where id = ?";
-            con = cn.getCon();
+            con = ConnectionDB.newInstanceDB().getCon();
             ps = con.prepareStatement(sql);
             ps.setInt(1, g.getNivel().getId());
             ps.setInt(2, g.getGrado());
@@ -66,7 +65,7 @@ public class GradoDAO implements IGrado{
     public boolean delete(int id) {
         try {
             String sql = "delete from grado where id=?";
-            con = cn.getCon();
+            con = ConnectionDB.newInstanceDB().getCon();
             ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             ps.executeUpdate();
@@ -81,7 +80,7 @@ public class GradoDAO implements IGrado{
     public Grado selectById(int id) {
         try {
             String sql = "select * from grado where id=?";
-            con = cn.getCon();
+            con = ConnectionDB.newInstanceDB().getCon();
             ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             rs = ps.executeQuery();
@@ -104,7 +103,7 @@ public class GradoDAO implements IGrado{
         ArrayList<Grado> lista = new ArrayList<>();
         try {
             String sql = "select * from grado";
-            con = cn.getCon();
+            con = ConnectionDB.newInstanceDB().getCon();
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             Grado g;

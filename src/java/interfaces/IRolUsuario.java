@@ -12,5 +12,5 @@ import models.RolUsuario;
  * @author Jhonatan
  */
 public interface IRolUsuario extends ICRUD<RolUsuario>{
-    
+    RolUsuario selectByCod (String cod);
 }

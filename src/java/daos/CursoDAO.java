@@ -22,17 +22,15 @@ import models.Curso;
  */
 public class CursoDAO implements ICurso{
     
-    ConnectionDB cn = new ConnectionDB();
     Connection con;
     PreparedStatement ps;
     ResultSet rs;
-    CursoDAO cDAO = new CursoDAO();
 
     @Override
     public boolean insert(Curso c) {
         try {
             String sql = "insert into curso(nombre) values(?)";
-            con = cn.getCon();
+            con = ConnectionDB.newInstanceDB().getCon();
             ps = con.prepareStatement(sql);
             ps.setString(1, c.getNombre());
             ps.executeUpdate();
@@ -47,7 +45,7 @@ public class CursoDAO implements ICurso{
     public boolean update(Curso c) {
         try {
             String sql = "update curso nombre = ? where id = ?";
-            con = cn.getCon();
+            con = ConnectionDB.newInstanceDB().getCon();
             ps = con.prepareStatement(sql);
             ps.setString(1, c.getNombre());
             ps.setInt(2, c.getId());
@@ -63,7 +61,7 @@ public class CursoDAO implements ICurso{
     public boolean delete(int id) {        
         try {
             String sql = "delete from curso where id=?";
-            con = cn.getCon();
+            con = ConnectionDB.newInstanceDB().getCon();
             ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             ps.executeUpdate();
@@ -78,7 +76,7 @@ public class CursoDAO implements ICurso{
     public Curso selectById(int id) {        
         try {
             String sql = "select * from curso where id=?";
-            con = cn.getCon();
+            con = ConnectionDB.newInstanceDB().getCon();
             ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             rs = ps.executeQuery();
@@ -99,7 +97,7 @@ public class CursoDAO implements ICurso{
         ArrayList<Curso> lista = new ArrayList<>();
         try {
             String sql = "select * from curso";
-            con = cn.getCon();
+            con = ConnectionDB.newInstanceDB().getCon();
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             Curso c;

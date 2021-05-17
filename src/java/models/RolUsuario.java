@@ -12,6 +12,10 @@ package models;
 public class RolUsuario {
     private int id;
     private String descripcion;
+    private String cod;
+    
+    public RolUsuario() {
+    }
 
     public RolUsuario(int id) {
         this.id = id;
@@ -37,6 +41,13 @@ public class RolUsuario {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-    
+
+    public String getCod() {
+        return cod;
+    }
+
+    public void setCod(String cod) {
+        this.cod = cod;
+    }
     
 }

@@ -12,16 +12,18 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/G:/Documents/NetBeansProjects/DW_Proyecto_Final/src/java/interfaces/ISeccion.java</file>
+            <file>file:/G:/Documents/NetBeansProjects/DW_Proyecto_Final/web/alumno_seccion/alumnos_seccion.jsp</file>
+            <file>file:/G:/Documents/NetBeansProjects/DW_Proyecto_Final/src/java/interfaces/ICRUD.java</file>
+            <file>file:/G:/Documents/NetBeansProjects/DW_Proyecto_Final/web/alumno_seccion/manage_alumno_seccion.jsp</file>
             <file>file:/G:/Documents/NetBeansProjects/DW_Proyecto_Final/src/java/daos/UsuarioDAO.java</file>
-            <file>file:/G:/Documents/NetBeansProjects/DW_Proyecto_Final/src/java/models/Seccion.java</file>
-            <file>file:/G:/Documents/NetBeansProjects/DW_Proyecto_Final/src/java/daos/GradoDAO.java</file>
-            <file>file:/G:/Documents/NetBeansProjects/DW_Proyecto_Final/src/java/daos/EvaluacionDAO.java</file>
-            <file>file:/G:/Documents/NetBeansProjects/DW_Proyecto_Final/src/java/models/Grado.java</file>
-            <file>file:/G:/Documents/NetBeansProjects/DW_Proyecto_Final/src/java/daos/SeccionDAO.java</file>
+            <file>file:/G:/Documents/NetBeansProjects/DW_Proyecto_Final/web/alumno_seccion/delete_alumno_seccion.jsp</file>
+            <file>file:/G:/Documents/NetBeansProjects/DW_Proyecto_Final/web/alumno_seccion/tabla_alumnos_seccion.jsp</file>
+            <file>file:/G:/Documents/NetBeansProjects/DW_Proyecto_Final/src/java/models_relation/AlumnoSeccion.java</file>
+            <file>file:/G:/Documents/NetBeansProjects/DW_Proyecto_Final/src/java/interfaces/IUsuario.java</file>
+            <file>file:/G:/Documents/NetBeansProjects/DW_Proyecto_Final/src/java/daos/RolUsuarioDAO.java</file>
             <file>file:/G:/Documents/NetBeansProjects/DW_Proyecto_Final/src/java/daos/AlumnoSeccionDAO.java</file>
-            <file>file:/G:/Documents/NetBeansProjects/DW_Proyecto_Final/src/java/interfaces/IGrado.java</file>
-            <file>file:/G:/Documents/NetBeansProjects/DW_Proyecto_Final/src/java/models/Evaluacion.java</file>
+            <file>file:/G:/Documents/NetBeansProjects/DW_Proyecto_Final/src/java/servlets/AlumnoSeccionServlet.java</file>
+            <file>file:/G:/Documents/NetBeansProjects/DW_Proyecto_Final/src/java/models/Usuario.java</file>
         </group>
     </open-files>
 </project-private>

@@ -22,7 +22,6 @@ import models.RolUsuario;
  */
 public class RolUsuarioDAO implements IRolUsuario{
     
-    ConnectionDB cn = new ConnectionDB();
     Connection con;
     PreparedStatement ps;
     ResultSet rs;
@@ -31,7 +30,7 @@ public class RolUsuarioDAO implements IRolUsuario{
     public boolean insert(RolUsuario ru) {
         try {
             String sql = "insert into rol_usuario(descripcion) values(?)";
-            con = cn.getCon();
+            con = ConnectionDB.newInstanceDB().getCon();
             ps = con.prepareStatement(sql);
             ps.setInt(1, ru.getId());
             ps.executeUpdate();
@@ -46,7 +45,7 @@ public class RolUsuarioDAO implements IRolUsuario{
     public boolean update(RolUsuario ru) {
         try {
             String sql = "update rol_usuario set descripcion=?";
-            con = cn.getCon();
+            con = ConnectionDB.newInstanceDB().getCon();
             ps = con.prepareStatement(sql);
             ps.setString(1, ru.getDescripcion());
             ps.executeUpdate();
@@ -61,7 +60,7 @@ public class RolUsuarioDAO implements IRolUsuario{
     public boolean delete(int id) {
         try {
             String sql = "delete from rol_usuario where id=?";
-            con = cn.getCon();
+            con = ConnectionDB.newInstanceDB().getCon();
             ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             ps.executeUpdate();
@@ -76,13 +75,14 @@ public class RolUsuarioDAO implements IRolUsuario{
     public RolUsuario selectById(int id) {
         try {
             String sql = "select * from rol_usuario where id=?";
-            con = cn.getCon();
+            con = ConnectionDB.newInstanceDB().getCon();
             ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             rs = ps.executeQuery();
             RolUsuario ru = new RolUsuario(id);
             while (rs.next()) {
                 ru.setDescripcion(rs.getString("descripcion"));
+                ru.setCod(rs.getString("cod"));
             }
             return ru;
         } catch (SQLException ex) {
@@ -96,7 +96,7 @@ public class RolUsuarioDAO implements IRolUsuario{
         ArrayList<RolUsuario> lista = new ArrayList<>();
         try {
             String sql = "select * from rol_usuario";
-            con = cn.getCon();
+            con = ConnectionDB.newInstanceDB().getCon();
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             RolUsuario ru;
@@ -104,12 +104,34 @@ public class RolUsuarioDAO implements IRolUsuario{
                 int id = rs.getInt("id");
                 String desc = rs.getString("descripcion");
                 ru = new RolUsuario(id, desc);
+                ru.setCod(rs.getString("cod"));
                 lista.add(ru);
             }
         } catch (SQLException ex) {
             Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return lista;
+    }
+
+    @Override
+    public RolUsuario selectByCod(String cod) {
+        try {
+            String sql = "select * from rol_usuario where cod=?";
+            con = ConnectionDB.newInstanceDB().getCon();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, cod);
+            rs = ps.executeQuery();
+            RolUsuario ru = new RolUsuario();
+            while (rs.next()) {
+                ru.setId(rs.getInt("id"));
+                ru.setDescripcion(rs.getString("descripcion"));
+                ru.setCod(cod);
+            }
+            return ru;
+        } catch (SQLException ex) {
+            Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
     
 }

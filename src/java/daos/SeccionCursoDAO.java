@@ -24,11 +24,10 @@ import models_relation.SeccionCurso;
  * @author Jhonatan
  */
 public class SeccionCursoDAO implements ISeccionCurso {
-    ConnectionDB cn = new ConnectionDB();
+
     Connection con;
     PreparedStatement ps;
     ResultSet rs;
-    SeccionCursoDAO scDAO = new SeccionCursoDAO();
     SeccionDAO sDAO = new SeccionDAO();
     CursoDAO cDAO = new CursoDAO();
     UsuarioDAO uDAO = new UsuarioDAO();
@@ -37,7 +36,7 @@ public class SeccionCursoDAO implements ISeccionCurso {
     public boolean insert(SeccionCurso sc) {
         try {
             String sql = "insert into seccion_curso(curso, seccion, docente) values(?, ?, ?)";
-            con = cn.getCon();
+            con = ConnectionDB.newInstanceDB().getCon();
             ps = con.prepareStatement(sql);
             ps.setInt(1, sc.getCurso().getId());
             ps.setInt(2, sc.getSeccion().getId());
@@ -54,7 +53,7 @@ public class SeccionCursoDAO implements ISeccionCurso {
     public boolean update(SeccionCurso sc) {
         try {
             String sql = "update seccion_curso set curso =?, seccion = ?, docente = ? where id = ?";
-            con = cn.getCon();
+            con = ConnectionDB.newInstanceDB().getCon();
             ps = con.prepareStatement(sql);
             ps.setInt(1, sc.getCurso().getId());
             ps.setInt(2, sc.getSeccion().getId());
@@ -72,7 +71,7 @@ public class SeccionCursoDAO implements ISeccionCurso {
     public boolean delete(int id) {
         try {
             String sql = "delete from seccion_curso where id=?";
-            con = cn.getCon();
+            con = ConnectionDB.newInstanceDB().getCon();
             ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             ps.executeUpdate();
@@ -87,7 +86,7 @@ public class SeccionCursoDAO implements ISeccionCurso {
     public SeccionCurso selectById(int id) {
         try {
             String sql = "select * from seccion_curso where id=?";
-            con = cn.getCon();
+            con = ConnectionDB.newInstanceDB().getCon();
             ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             rs = ps.executeQuery();
@@ -113,7 +112,7 @@ public class SeccionCursoDAO implements ISeccionCurso {
         ArrayList<SeccionCurso> lista = new ArrayList<>();
         try {
             String sql = "select * from seccion_curso";
-            con = cn.getCon();
+            con = ConnectionDB.newInstanceDB().getCon();
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             SeccionCurso sc;

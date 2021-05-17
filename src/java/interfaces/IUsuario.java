@@ -5,6 +5,8 @@
  */
 package interfaces;
 
+import java.util.ArrayList;
+import models.RolUsuario;
 import models.Usuario;
 
 
@@ -14,4 +16,6 @@ import models.Usuario;
  */
 public interface IUsuario extends ICRUD<Usuario>{
     boolean login();
+    ArrayList<Usuario> selectAllByRol(RolUsuario ru);
+    Usuario selectByDocumento(String doc);
 }

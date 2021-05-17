@@ -22,18 +22,17 @@ import models.Seccion;
  * @author Jhonatan
  */
 public class SeccionDAO implements ISeccion {
-    ConnectionDB cn = new ConnectionDB();
+
     Connection con;
     PreparedStatement ps;
     ResultSet rs;
-    SeccionDAO sDAO = new SeccionDAO();
     GradoDAO gDAO = new GradoDAO();
 
     @Override
     public boolean insert(Seccion c) {
         try {
             String sql = "insert into seccion(descripcion, grado, anio) values(?, ?, ?)";
-            con = cn.getCon();
+            con = ConnectionDB.newInstanceDB().getCon();
             ps = con.prepareStatement(sql);
             ps.setString(1, c.getDescripcion());
             ps.setInt(2, c.getGrado().getId());
@@ -50,7 +49,7 @@ public class SeccionDAO implements ISeccion {
     public boolean update(Seccion c) {
         try {
             String sql = "update seccion set descripcion =?, grado = ?, anio = ? where id = ?";
-            con = cn.getCon();
+            con = ConnectionDB.newInstanceDB().getCon();
             ps = con.prepareStatement(sql);
             ps.setString(1, c.getDescripcion());
             ps.setInt(2, c.getGrado().getId());
@@ -68,7 +67,7 @@ public class SeccionDAO implements ISeccion {
     public boolean delete(int id) {
         try {
             String sql = "delete from seccion where id=?";
-            con = cn.getCon();
+            con = ConnectionDB.newInstanceDB().getCon();
             ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             ps.executeUpdate();
@@ -83,7 +82,7 @@ public class SeccionDAO implements ISeccion {
     public Seccion selectById(int id) {
         try {
             String sql = "select * from seccion where id=?";
-            con = cn.getCon();
+            con = ConnectionDB.newInstanceDB().getCon();
             ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             rs = ps.executeQuery();
@@ -107,7 +106,7 @@ public class SeccionDAO implements ISeccion {
         ArrayList<Seccion> lista = new ArrayList<>();
         try {
             String sql = "select * from seccion";
-            con = cn.getCon();
+            con = ConnectionDB.newInstanceDB().getCon();
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             Seccion c;

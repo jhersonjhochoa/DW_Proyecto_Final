@@ -5,6 +5,7 @@
  */
 package interfaces;
 
+import java.util.ArrayList;
 import models_relation.AlumnoSeccion;
 
 /**
@@ -12,5 +13,5 @@ import models_relation.AlumnoSeccion;
  * @author Jhonatan
  */
 public interface IAlumnoSeccion extends ICRUD<AlumnoSeccion>{
-    
+    ArrayList<AlumnoSeccion> selectBySeccion(int id_sec);
 }

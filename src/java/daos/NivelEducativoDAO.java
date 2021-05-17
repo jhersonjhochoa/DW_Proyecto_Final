@@ -21,17 +21,16 @@ import models.NivelEducativo;
  * @author Jhonatan
  */
 public class NivelEducativoDAO implements INivelEducativo{
-    ConnectionDB cn = new ConnectionDB();
+    
     Connection con;
     PreparedStatement ps;
     ResultSet rs;
-    NivelEducativoDAO neDAO = new NivelEducativoDAO();
 
     @Override
     public boolean insert(NivelEducativo ne) {
         try {
             String sql = "insert into nivel_educativo(descripcion) values(?)";
-            con = cn.getCon();
+            con = ConnectionDB.newInstanceDB().getCon();
             ps = con.prepareStatement(sql);
             ps.setString(1, ne.getDescripcion());
             ps.executeUpdate();
@@ -46,7 +45,7 @@ public class NivelEducativoDAO implements INivelEducativo{
     public boolean update(NivelEducativo ne) {
         try {
             String sql = "update nivel_educativo descripcion = ? where id = ?";
-            con = cn.getCon();
+            con = ConnectionDB.newInstanceDB().getCon();
             ps = con.prepareStatement(sql);
             ps.setString(1, ne.getDescripcion());
             ps.setInt(2, ne.getId());
@@ -62,7 +61,7 @@ public class NivelEducativoDAO implements INivelEducativo{
     public boolean delete(int id) {        
         try {
             String sql = "delete from nivel_educativo where id=?";
-            con = cn.getCon();
+            con = ConnectionDB.newInstanceDB().getCon();
             ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             ps.executeUpdate();
@@ -77,7 +76,7 @@ public class NivelEducativoDAO implements INivelEducativo{
     public NivelEducativo selectById(int id) {        
         try {
             String sql = "select * from nivel_educativo where id=?";
-            con = cn.getCon();
+            con = ConnectionDB.newInstanceDB().getCon();
             ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             rs = ps.executeQuery();
@@ -98,7 +97,7 @@ public class NivelEducativoDAO implements INivelEducativo{
         ArrayList<NivelEducativo> lista = new ArrayList<>();
         try {
             String sql = "select * from nivel_educativo";
-            con = cn.getCon();
+            con = ConnectionDB.newInstanceDB().getCon();
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             NivelEducativo c;

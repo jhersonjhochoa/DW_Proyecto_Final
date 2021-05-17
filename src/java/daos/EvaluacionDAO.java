@@ -22,18 +22,17 @@ import models_relation.SeccionCurso;
  * @author Jhonatan
  */
 public class EvaluacionDAO implements IEvaluacion {
-    ConnectionDB cn = new ConnectionDB();
+
     Connection con;
     PreparedStatement ps;
     ResultSet rs;
     SeccionCursoDAO scDAO = new SeccionCursoDAO();
-    EvaluacionDAO eDAO = new EvaluacionDAO();
 
     @Override
     public boolean insert(Evaluacion e) {
         try {
             String sql = "insert into evaluacion(seccion_curso, descripcion, porcentaje, bonus) values(?, ?, ?, ?)";
-            con = cn.getCon();
+            con = ConnectionDB.newInstanceDB().getCon();
             ps = con.prepareStatement(sql);
             ps.setInt(1, e.getSeccion_curso().getId());
             ps.setString(2, e.getDescripcion());
@@ -51,7 +50,7 @@ public class EvaluacionDAO implements IEvaluacion {
     public boolean update(Evaluacion e) {
         try {
             String sql = "update evaluacion set seccion_curso =?, descripcion = ?, porcentaje = ?, bonus = ? where id = ?";
-            con = cn.getCon();
+            con = ConnectionDB.newInstanceDB().getCon();
             ps = con.prepareStatement(sql);
             ps.setInt(1, e.getSeccion_curso().getId());
             ps.setString(2, e.getDescripcion());
@@ -70,7 +69,7 @@ public class EvaluacionDAO implements IEvaluacion {
     public boolean delete(int id) {
         try {
             String sql = "delete from evaluacion where id=?";
-            con = cn.getCon();
+            con = ConnectionDB.newInstanceDB().getCon();
             ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             ps.executeUpdate();
@@ -85,7 +84,7 @@ public class EvaluacionDAO implements IEvaluacion {
     public Evaluacion selectById(int id) {
         try {
             String sql = "select * from evaluacion where id=?";
-            con = cn.getCon();
+            con = ConnectionDB.newInstanceDB().getCon();
             ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             rs = ps.executeQuery();
@@ -110,7 +109,7 @@ public class EvaluacionDAO implements IEvaluacion {
         ArrayList<Evaluacion> lista = new ArrayList<>();
         try {
             String sql = "select * from evaluacion";
-            con = cn.getCon();
+            con = ConnectionDB.newInstanceDB().getCon();
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             Evaluacion e;

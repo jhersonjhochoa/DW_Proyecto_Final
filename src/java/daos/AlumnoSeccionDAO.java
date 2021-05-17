@@ -23,24 +23,23 @@ import models_relation.AlumnoSeccion;
  * @author Jhonatan
  */
 public class AlumnoSeccionDAO implements IAlumnoSeccion {
-    ConnectionDB cn = new ConnectionDB();
+
     Connection con;
     PreparedStatement ps;
     ResultSet rs;
     SeccionDAO sDAO = new SeccionDAO();
     UsuarioDAO uDAO = new UsuarioDAO();
-    AlumnoSeccionDAO asDAO = new AlumnoSeccionDAO();
 
     @Override
     public boolean insert(AlumnoSeccion as) {
         try {
             String sql = "insert into alumno_seccion(alumno, seccion, promedio, orden_mertio) values(?, ?, ?, ?)";
-            con = cn.getCon();
+            con = ConnectionDB.newInstanceDB().getCon();
             ps = con.prepareStatement(sql);
             ps.setInt(1, as.getAlumno().getId());
             ps.setInt(2, as.getSeccion().getId());
             ps.setDouble(3, as.getPromedio());
-            ps.setInt(3, as.getOrden_merito());
+            ps.setInt(4, as.getOrden_merito());
             ps.executeUpdate();
             return true;
         } catch (SQLException ex) {
@@ -53,7 +52,7 @@ public class AlumnoSeccionDAO implements IAlumnoSeccion {
     public boolean update(AlumnoSeccion as) {
         try {
             String sql = "update alumno_seccion set alumno = ?, seccion = ?, promedio = ?, orden_mertio = ? where id = ?";
-            con = cn.getCon();
+            con = ConnectionDB.newInstanceDB().getCon();
             ps = con.prepareStatement(sql);
             ps.setInt(1, as.getAlumno().getId());
             ps.setInt(2, as.getSeccion().getId());
@@ -72,7 +71,7 @@ public class AlumnoSeccionDAO implements IAlumnoSeccion {
     public boolean delete(int id) {
         try {
             String sql = "delete from alumno_seccion where id=?";
-            con = cn.getCon();
+            con = ConnectionDB.newInstanceDB().getCon();
             ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             ps.executeUpdate();
@@ -87,7 +86,7 @@ public class AlumnoSeccionDAO implements IAlumnoSeccion {
     public AlumnoSeccion selectById(int id) {
         try {
             String sql = "select * from alumno_seccion where id = ?";
-            con = cn.getCon();
+            con = ConnectionDB.newInstanceDB().getCon();
             ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             rs = ps.executeQuery();
@@ -97,6 +96,7 @@ public class AlumnoSeccionDAO implements IAlumnoSeccion {
                 Usuario alumno = uDAO.selectById(rs.getInt("alumno"));
                 as.setAlumno(alumno);
                 Seccion s = sDAO.selectById(rs.getInt("seccion"));
+                as.setSeccion(s);
                 as.setAlumno(alumno);
                 as.setPromedio(rs.getDouble("promedio"));
                 as.setOrden_merito(rs.getInt("orden_mertio"));
@@ -113,7 +113,7 @@ public class AlumnoSeccionDAO implements IAlumnoSeccion {
         ArrayList<AlumnoSeccion> lista = new ArrayList<>();
         try {
             String sql = "select * from alumno_seccion";
-            con = cn.getCon();
+            con = ConnectionDB.newInstanceDB().getCon();
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             AlumnoSeccion as;
@@ -123,6 +123,7 @@ public class AlumnoSeccionDAO implements IAlumnoSeccion {
                 Usuario alumno = uDAO.selectById(rs.getInt("alumno"));
                 as.setAlumno(alumno);
                 Seccion s = sDAO.selectById(rs.getInt("seccion"));
+                as.setSeccion(s);
                 as.setAlumno(alumno);
                 as.setPromedio(rs.getDouble("promedio"));
                 as.setOrden_merito(rs.getInt("orden_mertio"));
@@ -133,4 +134,33 @@ public class AlumnoSeccionDAO implements IAlumnoSeccion {
         }
         return lista;
     }
+    
+    @Override
+    public ArrayList<AlumnoSeccion> selectBySeccion(int id_sec) {
+        ArrayList<AlumnoSeccion> lista = new ArrayList<>();
+        try {
+            String sql = "select * from alumno_seccion where seccion = ?";
+            con = ConnectionDB.newInstanceDB().getCon();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, id_sec);
+            rs = ps.executeQuery();
+            Seccion s = sDAO.selectById(id_sec);
+            AlumnoSeccion as;
+            while (rs.next()) {
+                as = new AlumnoSeccion();
+                as.setId(rs.getInt("id"));
+                Usuario alumno = uDAO.selectById(rs.getInt("alumno"));
+                as.setAlumno(alumno);
+                as.setSeccion(s);
+                as.setAlumno(alumno);
+                as.setPromedio(rs.getDouble("promedio"));
+                as.setOrden_merito(rs.getInt("orden_mertio"));
+                lista.add(as);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return lista;
+    }
+
 }
