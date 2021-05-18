@@ -163,4 +163,32 @@ public class AlumnoSeccionDAO implements IAlumnoSeccion {
         return lista;
     }
 
+    @Override
+    public ArrayList<AlumnoSeccion> selectByAlumno(int id_alumno) {
+    ArrayList<AlumnoSeccion> lista = new ArrayList<>();
+        try {
+            String sql = "select * from alumno_seccion where alumno = ?";
+            con = ConnectionDB.newInstanceDB().getCon();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, id_alumno);
+            rs = ps.executeQuery();
+            Seccion s = sDAO.selectById(id_alumno);
+            AlumnoSeccion as;
+            while (rs.next()) {
+                as = new AlumnoSeccion();
+                as.setId(rs.getInt("id"));
+                Usuario alumno = uDAO.selectById(rs.getInt("alumno"));
+                as.setAlumno(alumno);
+                as.setSeccion(s);
+                as.setAlumno(alumno);
+                as.setPromedio(rs.getDouble("promedio"));
+                as.setOrden_merito(rs.getInt("orden_mertio"));
+                lista.add(as);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return lista;
+    }
+
 }

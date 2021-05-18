@@ -5,6 +5,7 @@
  */
 package interfaces;
 
+import java.util.ArrayList;
 import models.Seccion;
 
 /**
@@ -12,5 +13,5 @@ import models.Seccion;
  * @author Jhonatan
  */
 public interface ISeccion extends ICRUD<Seccion>{
-    
+    ArrayList<Seccion> selectByYears(int from, int to);
 }

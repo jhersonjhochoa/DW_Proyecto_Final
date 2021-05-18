@@ -60,6 +60,15 @@
               </p>
             </a>
           </li>
+          
+          <li class="nav-item">
+            <a href="Seccion" class="nav-link">
+              <i class="nav-icon fas fa-users"></i>
+              <p>
+                Secciones
+              </p>
+            </a>
+          </li>
 
           <li class="nav-item">
             <a href="https://adminlte.io/docs/3.1/" class="nav-link">

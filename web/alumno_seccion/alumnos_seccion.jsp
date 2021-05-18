@@ -67,7 +67,7 @@
                         <select class="form-control" id="selectSeccion">
                             <option class="d-none" selected>Seleccionar sección...</option>
                             <c:forEach items="${secciones}" var="sec">
-                                <option value="${sec.getId()}"><c:out value="${sec.getGrado().getGrado()} ${sec.getDescripcion()} - ${sec.getGrado().getNivel().getDescripcion()} (${sec.getAnio()})" /></option>
+                                <option value="${sec.getId()}"><c:out value="${sec.getFullDescripcion()} (${sec.getAnio()})" /></option>
                             </c:forEach>
                         </select>
                     </div>

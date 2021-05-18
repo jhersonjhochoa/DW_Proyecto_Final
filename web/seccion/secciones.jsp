@@ -31,12 +31,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Listado Usuarios</h1>
+            <h1>Listado Secciones</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Blank Page</li>
+              <li class="breadcrumb-item active">Secciones</li>
             </ol>
           </div>
         </div>
@@ -49,7 +49,7 @@
       <!-- Default box -->
       <div class="card">
         <div class="card-header">
-          <button id="addUsuario" class="my-0 btn-sm btn btn-primary">Agregar</button>
+          <button id="addSeccion" class="my-0 btn-sm btn btn-primary">Agregar</button>
 
           <div class="card-tools">
             <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -61,6 +61,26 @@
           </div>
         </div>
         <div class="card-body">
+            <form id="filtrosForm" method="GET" action="Seccion">
+                <div class="row">
+                    <div class="col-12">
+                        <h4>Seleccionar años:</h4>
+                        <hr class="mt-0">
+                    </div>
+                    <div class="form-group col-md-2 col-6">
+                        <label>Desde</label>
+                        <input class="form-control" type="number" name="year_from" value="${year_from}">
+                    </div>
+                    <div class="form-group col-md-2 col-6">
+                        <label>Hasta</label>
+                        <input class="form-control" type="number" name="year_to" value="${year_to}">
+                    </div>
+                    <div class="form-group col-12">
+                        <button type="submit" class="btn btn-sm btn-outline-secondary">Filtrar</button>
+                    </div>
+                    <div class="col-12"><hr class="mt-0"></div>
+                </div>
+            </form>
             <c:if test="${error_detail != null && error_detail != ''}">
                 <div class="alert alert-danger" role="alert">
                     Error. Detalle: <b><c:out value="${error_detail}"></c:out></b>
@@ -68,45 +88,45 @@
             </c:if>
             <c:if test="${saved}">
                 <div class="alert alert-success" role="alert">
-                    Usuario agregado correctamente.
+                    Sección agregada correctamente.
                 </div>
             </c:if>
             <c:if test="${updated}">
                 <div class="alert alert-success" role="alert">
-                    Usuario actualizado correctamente.
+                    Sección actualizada correctamente.
                 </div>
             </c:if>
             <c:if test="${deleted}">
                 <div class="alert alert-success" role="alert">
-                    Usuario eliminado correctamente.
+                    Sección eliminada correctamente.
                 </div>
             </c:if>
+            <c:if test="${secciones.size() == 0}">
+                <div class="alert alert-secondary" role="alert">
+                  No existen secciones para los años seleccionados.
+                </div>
+            </c:if>
+            <c:if test="${secciones.size() != 0}">
             <table id="tablaUsuarios" class="table table-bordered table-hover">
               <thead>
               <tr>
-                <th>Rol</th>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Teléfono</th>
-                <th>Documento</th>
-                <th>Username</th>
+                <th>Grado</th>
+                <th>Descripción</th>
+                <th>Año</th>
                 <th>Opciones</th>
               </tr>
               </thead>
               <tbody>
-                  <c:forEach items="${usuarios}" var="u" varStatus="status">
+                  <c:forEach items="${secciones}" var="sec" varStatus="status">
                     <tr>
-                        <td><c:out value="${u.getRol().getDescripcion()}" /></td>
-                        <td><c:out value="${u.getNombre()}" /></td>
-                        <td><c:out value="${u.getApellido()}" /></td>
-                        <td><c:out value="${u.getTelefono()}" /></td>
-                        <td><c:out value="${u.getDocumento()}" /></td>
-                        <td><c:out value="${u.getUser()}" /></td>
+                        <td><c:out value="${sec.getGrado().getDescripcion()}" /></td>
+                        <td><c:out value="${sec.getDescripcion()}" /></td>
+                        <td><c:out value="${sec.getAnio()}" /></td>
                         <td>
-                            <button class="editUsuario btn btn-tool" data-id="${u.getId()}">
+                            <button class="editSeccion btn btn-tool" data-id="${sec.getId()}">
                                 <i class="fas fa-edit"></i>
                             </button>
-                            <button class="deleteUsuario btn btn-tool" data-id="${u.getId()}">
+                            <button class="deleteSeccion btn btn-tool" data-id="${sec.getId()}">
                                 <i class="text-danger fas fa-trash"></i>
                             </button>
                         </td>
@@ -114,10 +134,11 @@
                   </c:forEach>
               </tbody>
             </table>
+            </c:if>
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
-            <a href="Usuario" class="my-0 btn-sm btn btn-secondary">Actualizar</a>
+            <a href="Seccion" class="my-0 btn-sm btn btn-secondary">Actualizar</a>
         </div>
         <!-- /.card-footer-->
       </div>
@@ -141,47 +162,47 @@
 
 <%@include file="/componentes/js.jsp" %>
 <script>
-    $('#addUsuario').on('click', () => {
+    $('#addSeccion').on('click', () => {
         $.ajax({
-          url: `Usuario`,
+          url: `Seccion`,
           type: 'GET',
-          data: {action : 'add'},
+          data: $('#filtrosForm').serialize()+'&action=add',
           success: function (data) {
             $('#modal-cont').html(data);
-            $('#modal-usuario').modal('show');
+            $('#modal-seccion').modal('show');
           },
           error: function (xhr, errmsg, err) {
-            console.log("error agregando usuario...");
+            console.log("error agregando sección...");
           }
         });
     });
-    $('.editUsuario').on('click', function () {
+    $('.editSeccion').on('click', function () {
         let id = $(this).data("id");
         $.ajax({
-          url: `Usuario`,
+          url: `Seccion`,
           type: 'GET',
-          data: {action : 'update', id: id},
+          data: $('#filtrosForm').serialize()+'&action=update&id='+id,
           success: function (data) {
             $('#modal-cont').html(data);
-            $('#modal-usuario').modal('show');
+            $('#modal-seccion').modal('show');
           },
           error: function (xhr, errmsg, err) {
-            console.log("error agregando usuario...");
+            console.log("error actualizando seccion...");
           }
         });
     });
-    $('.deleteUsuario').on('click', function () {
+    $('.deleteSeccion').on('click', function () {
         let id = $(this).data("id");
         $.ajax({
-          url: `Usuario`,
+          url: `Seccion`,
           type: 'GET',
-          data: {action : 'delete', id: id},
+          data: $('#filtrosForm').serialize()+'&action=delete&id='+id,
           success: function (data) {
             $('#modal-cont').html(data);
-            $('#modal-usuario-delete').modal('show');
+            $('#modal-seccion-delete').modal('show');
           },
           error: function (xhr, errmsg, err) {
-            console.log("error agregando usuario...");
+            console.log("error eliminando seccion...");
           }
         });
     });

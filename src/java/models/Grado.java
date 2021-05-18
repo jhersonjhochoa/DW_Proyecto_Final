@@ -13,6 +13,12 @@ public class Grado {
     private int id;
     private NivelEducativo nivel;
     private int grado;
+    
+    public Grado() {}
+
+    public Grado(int id) {
+        this.id = id;
+    }
 
     public int getId() {
         return id;
@@ -36,6 +42,10 @@ public class Grado {
 
     public void setGrado(int grado) {
         this.grado = grado;
+    }
+    
+    public String getDescripcion() {
+        return grado + " - " + nivel.getDescripcion();
     }
     
 }

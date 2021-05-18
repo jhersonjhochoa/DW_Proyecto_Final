@@ -13,7 +13,7 @@
         <div class="modal-body">
             <p>Se va a desvincular el alumno:<br> 
                 <b>Documento: </b><c:out value="${as.getAlumno().getDocumento()}" /><br>
-                <b>Sección: </b><c:out value="${as.getSeccion().getGrado().getGrado()} ${as.getSeccion().getDescripcion()} - ${as.getSeccion().getGrado().getNivel().getDescripcion()} (${as.getSeccion().getAnio()})" /></p>
+                <b>Sección: </b><c:out value="${as.getSeccion().getFullDescripcion} (${as.getSeccion().getAnio()})" /></p>
             <input type="hidden" value="${as.getId()}" name="id">
             <input type="hidden" value="${as.getSeccion().getId()}" name="seccion">
             <input type="hidden" value="delete" name="action">

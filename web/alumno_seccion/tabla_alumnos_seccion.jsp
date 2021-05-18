@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:if test="${error_detail != null && error_detail != ''}">
     <div class="alert alert-danger" role="alert">
-        No se pudo agregar. Detalle: <b><c:out value="${error_detail}"></c:out></b>
+        Error. Detalle: <b><c:out value="${error_detail}"></c:out></b>
     </div>
 </c:if>
 <c:if test="${saved}">

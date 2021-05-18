@@ -6,11 +6,15 @@
 package servlets;
 
 import daos.AlumnoSeccionDAO;
+import daos.GradoDAO;
 import daos.RolUsuarioDAO;
+import daos.SeccionDAO;
 import daos.UsuarioDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,7 +22,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.Grado;
 import models.RolUsuario;
+import models.Seccion;
 import models.Usuario;
 import models_relation.AlumnoSeccion;
 
@@ -26,11 +32,11 @@ import models_relation.AlumnoSeccion;
  *
  * @author Jhonatan
  */
-@WebServlet(name = "Usuario", urlPatterns = {"/Usuario"})
-public class UsuarioServlet extends HttpServlet {
+@WebServlet(name = "Seccion", urlPatterns = {"/Seccion"})
+public class SeccionServlet extends HttpServlet {
     
-    UsuarioDAO uDAO = new UsuarioDAO();
-    RolUsuarioDAO ruDAO = new RolUsuarioDAO();
+    SeccionDAO sDAO = new SeccionDAO();
+    GradoDAO gDAO = new GradoDAO();
     AlumnoSeccionDAO asDAO = new AlumnoSeccionDAO();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -41,27 +47,33 @@ public class UsuarioServlet extends HttpServlet {
         if (redirect != null) {
             action = redirect;
         }
+        String anio = Calendar.getInstance().get(Calendar.YEAR) + "";
+        int year_from = Integer.parseInt(request.getParameter("year_from") == null ? anio : request.getParameter("year_from"));
+        int year_to = Integer.parseInt(request.getParameter("year_to") == null ? anio : request.getParameter("year_to"));
+        request.setAttribute("year_from", year_from);
+        request.setAttribute("year_to", year_to);
         String template;
-        Usuario usuario = new Usuario();
+        Seccion seccion = new Seccion();
         if ("update".equals(action) || "add".equals(action)) {
-            template = "usuario/manage_usuario.jsp";
+            template = "seccion/manage_seccion.jsp";
             if (action.equals("update")) {
                 int id = Integer.parseInt(request.getParameter("id"));
-                usuario = uDAO.selectById(id);
+                seccion = sDAO.selectById(id);
             }
-            List<RolUsuario> roles_usuario = ruDAO.selectAll();
-            request.setAttribute("roles_usuario", roles_usuario);
+            List<Grado> grados = gDAO.selectAll();
+            request.setAttribute("grados", grados);
+            request.setAttribute("anio", anio);
             request.setAttribute("action", action);
-            request.setAttribute("usuario", usuario);
+            request.setAttribute("seccion", seccion);
         } else if ("delete".equals(action)) {
             int id = Integer.parseInt(request.getParameter("id"));
-            usuario = uDAO.selectById(id);
-            request.setAttribute("usuario", usuario);
-            template = "usuario/delete_usuario.jsp";
+            seccion = sDAO.selectById(id);
+            request.setAttribute("seccion", seccion);
+            template = "seccion/delete_seccion.jsp";
         } else {
-            template = "usuario/usuarios.jsp";
-            List<Usuario> usuarios = uDAO.selectAll();
-            request.setAttribute("usuarios", usuarios);
+            template = "seccion/secciones.jsp";
+            List<Seccion> secciones = sDAO.selectByYears(year_from, year_to);
+            request.setAttribute("secciones", secciones);
         }
         
         RequestDispatcher rd = request.getRequestDispatcher(template);
@@ -97,31 +109,28 @@ public class UsuarioServlet extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
         if (action.equals("add") || action.equals("update")) {
-            Usuario u = new Usuario();
-            int id_ru = Integer.parseInt(request.getParameter("rol"));
-            u.setRol(new RolUsuario(id_ru));
-            u.setNombre(request.getParameter("nombre"));
-            u.setApellido(request.getParameter("apellido"));
-            u.setTelefono(request.getParameter("telefono"));
-            u.setDocumento(request.getParameter("documento"));
-            u.setUser(request.getParameter("user"));
+            Seccion s = new Seccion();
+            int id_grado = Integer.parseInt(request.getParameter("grado"));
+            s.setGrado(new Grado(id_grado));
+            s.setDescripcion(request.getParameter("descripcion"));
+            s.setAnio(Integer.parseInt(request.getParameter("anio")));
             if (action.equals("add")) {
-                uDAO.insert(u);
+                sDAO.insert(s);
                 request.setAttribute("saved", true);
             } else {
-                u.setId(Integer.parseInt(request.getParameter("id")));
-                uDAO.update(u);
+                s.setId(Integer.parseInt(request.getParameter("id")));
+                sDAO.update(s);
                 request.setAttribute("updated", true);
             }
         } else if (action.equals("delete")) { // update
             int id = Integer.parseInt(request.getParameter("id"));
-            ArrayList<AlumnoSeccion> lista_as = asDAO.selectByAlumno(id);
+            ArrayList<AlumnoSeccion> lista_as = asDAO.selectBySeccion(id);
             boolean deleted = false;
             if (lista_as.isEmpty()) {
-                uDAO.delete(id);
+                sDAO.delete(id);
                 deleted = true;
             } else {
-                request.setAttribute("error_detail", "No se puede eliminar el alumno por que está matriculado en una o más secciones.");
+                request.setAttribute("error_detail", "No se puede eliminar la sección por que tiene alumnos matroculados.");
             }
             request.setAttribute("deleted", deleted);
         }

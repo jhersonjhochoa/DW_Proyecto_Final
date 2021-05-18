@@ -26,6 +26,10 @@ public class Seccion {
     public String getDescripcion() {
         return descripcion;
     }
+    
+    public String getFullDescripcion() {
+        return grado.getGrado() + "-" + descripcion + " " + grado.getNivel().getDescripcion();
+    }
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
