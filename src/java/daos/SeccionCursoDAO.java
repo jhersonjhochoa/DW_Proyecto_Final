@@ -131,4 +131,30 @@ public class SeccionCursoDAO implements ISeccionCurso {
         }
         return lista;
     }
+
+    @Override
+    public ArrayList<SeccionCurso> selectByCurso(int id_curso) {
+        ArrayList<SeccionCurso> lista = new ArrayList<>();
+        try {
+            String sql = "select * from seccion_curso where curso = ?";
+            con = ConnectionDB.newInstanceDB().getCon();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, id_curso);
+            rs = ps.executeQuery();
+            SeccionCurso sc;
+            while (rs.next()) {
+                sc = new SeccionCurso();
+                Curso c = cDAO.selectById(rs.getInt("curso"));
+                Seccion s = sDAO.selectById(rs.getInt("seccion"));
+                Usuario docente = uDAO.selectById(rs.getInt("docente"));
+                sc.setCurso(c);
+                sc.setSeccion(s);
+                sc.setDocente(docente);
+                lista.add(sc);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return lista;
+    }
 }
