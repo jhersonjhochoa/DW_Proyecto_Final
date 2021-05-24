@@ -5,7 +5,9 @@
  */
 package servlets;
 
-import daos.AlumnoSeccionDAO;
+import daos.CursoDAO;
+import daos.RolUsuarioDAO;
+import daos.SeccionCursoDAO;
 import daos.SeccionDAO;
 import daos.UsuarioDAO;
 import java.io.IOException; 
@@ -16,20 +18,24 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.Curso;
+import models.RolUsuario;
 import models.Seccion;
 import models.Usuario;
-import models_relation.AlumnoSeccion;
+import models_relation.SeccionCurso;
 
 /**
  *
  * @author Jhonatan
  */
-@WebServlet(name = "AlumnoSeccion", urlPatterns = {"/AlumnoSeccion"})
-public class AlumnoSeccionServlet extends HttpServlet {
+@WebServlet(name = "SeccionCurso", urlPatterns = {"/SeccionCurso"})
+public class SeccionCursoServlet extends HttpServlet {
     
+    RolUsuarioDAO ruDAO = new RolUsuarioDAO();
     UsuarioDAO uDAO = new UsuarioDAO();
     SeccionDAO sDAO = new SeccionDAO();
-    AlumnoSeccionDAO asDAO = new AlumnoSeccionDAO();
+    CursoDAO cDAO = new CursoDAO();
+    SeccionCursoDAO scDAO = new SeccionCursoDAO();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -40,23 +46,33 @@ public class AlumnoSeccionServlet extends HttpServlet {
             action = redirect;
         }
         String template;
-        Usuario usuario = new Usuario();
-        if ("add".equals(action)) {
+        if ("update".equals(action) || "add".equals(action)) {
+            template = "seccion_curso/manage_seccion_curso.jsp";
             int seccion = Integer.parseInt(request.getParameter("seccion"));
-            template = "alumno_seccion/manage_alumno_seccion.jsp";
+            SeccionCurso sc = new SeccionCurso();
+            if (action.equals("update")) {
+                int id = Integer.parseInt(request.getParameter("id"));
+                sc = scDAO.selectById(id);
+            }
+            List<Curso> cursos = cDAO.selectAll();
+            RolUsuario ruDocente = ruDAO.selectByCod("DOC");
+            List<Usuario> docentes = uDAO.selectAllByRol(ruDocente);
+            request.setAttribute("cursos", cursos);
+            request.setAttribute("docentes", docentes);
+            request.setAttribute("action", action);
             request.setAttribute("seccion", seccion);
-            request.setAttribute("usuario", usuario);
-        } else if ("delete".equals(action)) {
+            request.setAttribute("sc", sc);
+        }  else if ("delete".equals(action)) {
             int id = Integer.parseInt(request.getParameter("id"));
-            AlumnoSeccion as = asDAO.selectById(id);
-            request.setAttribute("as", as);
-            template = "alumno_seccion/delete_alumno_seccion.jsp";
-        } else if ("getAlumnos".equals(action)) {
+            SeccionCurso sc = scDAO.selectById(id);
+            request.setAttribute("sc", sc);
+            template = "seccion_curso/delete_seccion_curso.jsp";
+        } else if ("getCursos".equals(action)) {
             int seccion = Integer.parseInt(request.getParameter("seccion"));
-            request.setAttribute("alumnos_sec", asDAO.selectBySeccion(seccion));
-            template = "alumno_seccion/tabla_alumnos_seccion.jsp";
+            request.setAttribute("seccion_cursos", scDAO.selectBySeccion(seccion));
+            template = "seccion_curso/tabla_seccion_cursos.jsp";
         } else {
-            template = "alumno_seccion/alumnos_seccion.jsp";
+            template = "seccion_curso/seccion_cursos.jsp";
             List<Seccion> secciones = sDAO.selectAll();
             request.setAttribute("secciones", secciones);
         }
@@ -92,41 +108,46 @@ public class AlumnoSeccionServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action");
-        if (action.equals("add")) {
+        if (action.equals("add") || action.equals("update")) {
             int id_sec = Integer.parseInt(request.getParameter("seccion"));
-            Seccion seccion = sDAO.selectById(id_sec);
+            Seccion seccion = new Seccion();
+            seccion.setId(id_sec);
             String error_detail = "";
             boolean error = false;
-            String documento = request.getParameter("documento");
-            Usuario alumno = uDAO.selectByDocumento(documento);
-            if (alumno == null || alumno.getId() == 0 || (alumno.getId() != 0 && !"ALUMN".equals(alumno.getRol().getCod()))) {
-                error = true;
-                error_detail = "Alumno no existe.";
-            } else {
-                AlumnoSeccion as = new AlumnoSeccion();
-                as.setAlumno(alumno);
-                as.setSeccion(seccion);
-                try {
-                    asDAO.insert(as);
-                } catch (Exception e) {
-                    error = true;
-                    error_detail = "Error interno.";
+            int id_curso = Integer.parseInt(request.getParameter("curso"));
+            int id_docente = Integer.parseInt(request.getParameter("docente"));
+            Curso curso = new Curso();
+            curso.setId(id_curso);
+            Usuario docente = new Usuario();
+            docente.setId(id_docente);
+            SeccionCurso sc_v = scDAO.selectBySeccionCurso(id_sec, id_curso);
+            SeccionCurso sc = new SeccionCurso();
+            sc.setSeccion(seccion);
+            sc.setCurso(curso);
+            sc.setDocente(docente);
+            if (sc_v == null || sc_v.getId() == 0) {
+                if (action.equals("add")) {
+                    scDAO.insert(sc);
+                    request.setAttribute("saved", true);
+                } else {
+                    sc.setId(Integer.parseInt(request.getParameter("id")));
+                    scDAO.update(sc);
+                    request.setAttribute("updated", true);
                 }
+            } else {
+                error = true;
+                error_detail = "Este curso ya se ha agregado.";
             }
             if (error) {
                 request.setAttribute("error_detail", error_detail);
-            } else {
-                request.setAttribute("saved", true);
             }
-            
         } else if (action.equals("delete")) { // update
             int id = Integer.parseInt(request.getParameter("id"));
             request.setAttribute("deleted", true);
-            asDAO.delete(id);
+            scDAO.delete(id);
         }
-        request.setAttribute("redirect", "getAlumnos");
+        request.setAttribute("redirect", "getCursos");
         processRequest(request, response);
     }
 

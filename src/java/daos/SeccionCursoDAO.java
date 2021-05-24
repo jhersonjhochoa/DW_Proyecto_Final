@@ -118,6 +118,7 @@ public class SeccionCursoDAO implements ISeccionCurso {
             SeccionCurso sc;
             while (rs.next()) {
                 sc = new SeccionCurso();
+                sc.setId(rs.getInt("id"));
                 Curso c = cDAO.selectById(rs.getInt("curso"));
                 Seccion s = sDAO.selectById(rs.getInt("seccion"));
                 Usuario docente = uDAO.selectById(rs.getInt("docente"));
@@ -142,9 +143,10 @@ public class SeccionCursoDAO implements ISeccionCurso {
             ps.setInt(1, id_curso);
             rs = ps.executeQuery();
             SeccionCurso sc;
+            Curso c = cDAO.selectById(id_curso);
             while (rs.next()) {
                 sc = new SeccionCurso();
-                Curso c = cDAO.selectById(rs.getInt("curso"));
+                sc.setId(rs.getInt("id"));
                 Seccion s = sDAO.selectById(rs.getInt("seccion"));
                 Usuario docente = uDAO.selectById(rs.getInt("docente"));
                 sc.setCurso(c);
@@ -156,5 +158,58 @@ public class SeccionCursoDAO implements ISeccionCurso {
             Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return lista;
+    }
+
+    @Override
+    public ArrayList<SeccionCurso> selectBySeccion(int id_seccion) {
+        ArrayList<SeccionCurso> lista = new ArrayList<>();
+        try {
+            String sql = "select * from seccion_curso where seccion = ?";
+            con = ConnectionDB.newInstanceDB().getCon();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, id_seccion);
+            rs = ps.executeQuery();
+            SeccionCurso sc;
+            Seccion s = sDAO.selectById(id_seccion);
+            while (rs.next()) {
+                sc = new SeccionCurso();
+                sc.setId(rs.getInt("id"));
+                Curso c = cDAO.selectById(rs.getInt("curso"));
+                Usuario docente = uDAO.selectById(rs.getInt("docente"));
+                sc.setCurso(c);
+                sc.setSeccion(s);
+                sc.setDocente(docente);
+                lista.add(sc);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return lista;
+    }
+
+    @Override
+    public SeccionCurso selectBySeccionCurso(int id_seccion, int id_curso) {
+        try {
+            String sql = "select * from seccion_curso where seccion = ? and curso = ?";
+            con = ConnectionDB.newInstanceDB().getCon();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, id_seccion);
+            ps.setInt(2, id_curso);
+            rs = ps.executeQuery();
+            SeccionCurso sc = new SeccionCurso();
+            Seccion s = sDAO.selectById(id_seccion);
+            Curso c = cDAO.selectById(id_curso);
+            while (rs.next()) {
+                Usuario docente = uDAO.selectById(rs.getInt("docente"));
+                sc.setId(rs.getInt("id"));
+                sc.setCurso(c);
+                sc.setSeccion(s);
+                sc.setDocente(docente);
+            }
+            return sc;
+        } catch (SQLException ex) {
+            Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 }

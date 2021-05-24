@@ -128,4 +128,30 @@ public class EvaluacionDAO implements IEvaluacion {
         }
         return lista;
     }
+
+    @Override
+    public ArrayList<Evaluacion> selectBySc(int id_sc) {
+                ArrayList<Evaluacion> lista = new ArrayList<>();
+        try {
+            String sql = "select * from evaluacion where seccion_curso = ?";
+            con = ConnectionDB.newInstanceDB().getCon();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, id_sc);
+            SeccionCurso sc = scDAO.selectById(id_sc);
+            rs = ps.executeQuery();
+            Evaluacion e;
+            while (rs.next()) {
+                e = new Evaluacion();
+                e.setId(rs.getInt("id"));
+                e.setSeccion_curso(sc);
+                e.setDescripcion(rs.getString("descripcion"));
+                e.setPorcentaje(rs.getInt("porcentaje"));
+                e.setBonus(rs.getBoolean("bonus"));
+                lista.add(e);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return lista;
+    }
 }

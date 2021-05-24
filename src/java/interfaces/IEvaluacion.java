@@ -5,6 +5,7 @@
  */
 package interfaces;
 
+import java.util.ArrayList;
 import models.Evaluacion;
 
 /**
@@ -12,5 +13,5 @@ import models.Evaluacion;
  * @author Jhonatan
  */
 public interface IEvaluacion extends ICRUD<Evaluacion>{
-    
+    ArrayList<Evaluacion> selectBySc(int id_sc);
 }

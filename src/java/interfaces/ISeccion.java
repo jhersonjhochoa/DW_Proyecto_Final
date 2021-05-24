@@ -14,4 +14,5 @@ import models.Seccion;
  */
 public interface ISeccion extends ICRUD<Seccion>{
     ArrayList<Seccion> selectByYears(int from, int to);
+    ArrayList<Seccion> selectByGrado(int id_grado);
 }

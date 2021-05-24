@@ -35,13 +35,15 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <a href="/" class="nav-link">
+            <a href="${pageContext.request.getContextPath()}" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
               </p>
             </a>
           </li>
+          
+          <li class="nav-header">ADMINISTRACIÓN</li>
 
           <li class="nav-item">
             <a href="Usuario" class="nav-link">
@@ -51,16 +53,16 @@
               </p>
             </a>
           </li>
-          
+
           <li class="nav-item">
-            <a href="AlumnoSeccion" class="nav-link">
+            <a href="Curso" class="nav-link">
               <i class="nav-icon fas fa-users"></i>
               <p>
-                Agregar alumno a sección
+                Cursos
               </p>
             </a>
           </li>
-          
+                    
           <li class="nav-item">
             <a href="Seccion" class="nav-link">
               <i class="nav-icon fas fa-users"></i>
@@ -71,12 +73,39 @@
           </li>
 
           <li class="nav-item">
-            <a href="https://adminlte.io/docs/3.1/" class="nav-link">
-              <i class="nav-icon fas fa-file"></i>
-              <p>Documentation</p>
+            <a href="AlumnoSeccion" class="nav-link">
+              <i class="nav-icon fas fa-users"></i>
+              <p>
+                Agregar alumno a sección
+              </p>
             </a>
           </li>
-          <li class="nav-header">MULTI LEVEL EXAMPLE</li>
+          
+          <li class="nav-item">
+            <a href="SeccionCurso" class="nav-link">
+              <i class="nav-icon fas fa-users"></i>
+              <p>
+                Agregar curso a sección
+              </p>
+            </a>
+          </li>
+                    
+          
+          
+          <li class="nav-header">ÁREA DOCENTE</li>
+          
+          <li class="nav-item">
+            <a href="Evaluacion" class="nav-link">
+              <i class="nav-icon fas fa-users"></i>
+              <p>
+                Evaluaciones
+              </p>
+            </a>
+          </li>
+          
+          <li class="nav-header">ÁREA ALUMNOS</li>
+
+          <!-- <li class="nav-header">MULTI LEVEL EXAMPLE</li>
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="fas fa-circle nav-icon"></i>
@@ -140,8 +169,8 @@
               <i class="fas fa-circle nav-icon"></i>
               <p>Level 1</p>
             </a>
-          </li>
-          <li class="nav-header">LABELS</li>
+          </li>-->
+          <!--<li class="nav-header">LABELS</li>
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon far fa-circle text-danger"></i>
@@ -159,7 +188,7 @@
               <i class="nav-icon far fa-circle text-info"></i>
               <p>Informational</p>
             </a>
-          </li>
+          </li>-->
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

@@ -5,9 +5,9 @@
  */
 package servlets;
 
-import daos.AlumnoSeccionDAO;
 import daos.GradoDAO;
-import daos.SeccionDAO;
+import daos.CursoDAO;
+import daos.SeccionCursoDAO;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -18,20 +18,18 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import models.Grado;
-import models.Seccion;
-import models_relation.AlumnoSeccion;
+import models.Curso;
+import models_relation.SeccionCurso;
 
 /**
  *
  * @author Jhonatan
  */
-@WebServlet(name = "Seccion", urlPatterns = {"/Seccion"})
-public class SeccionServlet extends HttpServlet {
+@WebServlet(name = "Curso", urlPatterns = {"/Curso"})
+public class CursoServlet extends HttpServlet {
     
-    SeccionDAO sDAO = new SeccionDAO();
-    GradoDAO gDAO = new GradoDAO();
-    AlumnoSeccionDAO asDAO = new AlumnoSeccionDAO();
+    CursoDAO cDAO = new CursoDAO();
+    SeccionCursoDAO scDAO = new SeccionCursoDAO();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -41,33 +39,25 @@ public class SeccionServlet extends HttpServlet {
         if (redirect != null) {
             action = redirect;
         }
-        String anio = Calendar.getInstance().get(Calendar.YEAR) + "";
-        int year_from = Integer.parseInt(request.getParameter("year_from") == null ? anio : request.getParameter("year_from"));
-        int year_to = Integer.parseInt(request.getParameter("year_to") == null ? anio : request.getParameter("year_to"));
-        request.setAttribute("year_from", year_from);
-        request.setAttribute("year_to", year_to);
         String template;
-        Seccion seccion = new Seccion();
+        Curso curso = new Curso();
         if ("update".equals(action) || "add".equals(action)) {
-            template = "seccion/manage_seccion.jsp";
+            template = "curso/manage_curso.jsp";
             if (action.equals("update")) {
                 int id = Integer.parseInt(request.getParameter("id"));
-                seccion = sDAO.selectById(id);
+                curso = cDAO.selectById(id);
             }
-            List<Grado> grados = gDAO.selectAll();
-            request.setAttribute("grados", grados);
-            request.setAttribute("anio", anio);
             request.setAttribute("action", action);
-            request.setAttribute("seccion", seccion);
+            request.setAttribute("curso", curso);
         } else if ("delete".equals(action)) {
             int id = Integer.parseInt(request.getParameter("id"));
-            seccion = sDAO.selectById(id);
-            request.setAttribute("seccion", seccion);
-            template = "seccion/delete_seccion.jsp";
+            curso = cDAO.selectById(id);
+            request.setAttribute("curso", curso);
+            template = "curso/delete_curso.jsp";
         } else {
-            template = "seccion/secciones.jsp";
-            List<Seccion> secciones = sDAO.selectByYears(year_from, year_to);
-            request.setAttribute("secciones", secciones);
+            template = "curso/cursos.jsp";
+            List<Curso> cursos = cDAO.selectAll();
+            request.setAttribute("cursos", cursos);
         }
         
         RequestDispatcher rd = request.getRequestDispatcher(template);
@@ -104,28 +94,26 @@ public class SeccionServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action");
         if (action.equals("add") || action.equals("update")) {
-            Seccion s = new Seccion();
-            int id_grado = Integer.parseInt(request.getParameter("grado"));
-            s.setGrado(new Grado(id_grado));
-            s.setDescripcion(request.getParameter("descripcion"));
-            s.setAnio(Integer.parseInt(request.getParameter("anio")));
+            Curso c = new Curso();
+            String nombre = request.getParameter("nombre");
+            c.setNombre(nombre);
             if (action.equals("add")) {
-                sDAO.insert(s);
+                cDAO.insert(c);
                 request.setAttribute("saved", true);
             } else {
-                s.setId(Integer.parseInt(request.getParameter("id")));
-                sDAO.update(s);
+                c.setId(Integer.parseInt(request.getParameter("id")));
+                cDAO.update(c);
                 request.setAttribute("updated", true);
             }
         } else if (action.equals("delete")) { // update
             int id = Integer.parseInt(request.getParameter("id"));
-            ArrayList<AlumnoSeccion> lista_as = asDAO.selectBySeccion(id);
+            ArrayList<SeccionCurso> lista_sc = scDAO.selectByCurso(id);
             boolean deleted = false;
-            if (lista_as.isEmpty()) {
-                sDAO.delete(id);
+            if (lista_sc.isEmpty()) {
+                cDAO.delete(id);
                 deleted = true;
             } else {
-                request.setAttribute("error_detail", "No se puede eliminar la sección por que tiene alumnos matroculados.");
+                request.setAttribute("error_detail", "No se puede eliminar el curso por que ya ha sido asignado a una o más secciones.");
             }
             request.setAttribute("deleted", deleted);
         }

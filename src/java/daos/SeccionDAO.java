@@ -127,7 +127,7 @@ public class SeccionDAO implements ISeccion {
 
     @Override
     public ArrayList<Seccion> selectByYears(int from, int to) {
-                ArrayList<Seccion> lista = new ArrayList<>();
+        ArrayList<Seccion> lista = new ArrayList<>();
         try {
             String sql = "select * from seccion WHERE anio BETWEEN ? AND ?";
             con = ConnectionDB.newInstanceDB().getCon();
@@ -141,6 +141,31 @@ public class SeccionDAO implements ISeccion {
                 c.setId(rs.getInt("id"));
                 c.setDescripcion(rs.getString("descripcion"));
                 Grado g = gDAO.selectById(rs.getInt("grado"));
+                c.setGrado(g);
+                c.setAnio(rs.getInt("anio"));
+                lista.add(c);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return lista;
+    }
+
+    @Override
+    public ArrayList<Seccion> selectByGrado(int id_grado) {
+        ArrayList<Seccion> lista = new ArrayList<>();
+        try {
+            String sql = "select * from seccion where grado=?";
+            con = ConnectionDB.newInstanceDB().getCon();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, id_grado);
+            rs = ps.executeQuery();
+            Seccion c;
+            Grado g = gDAO.selectById(id_grado);
+            while (rs.next()) {
+                c = new Seccion();
+                c.setId(rs.getInt("id"));
+                c.setDescripcion(rs.getString("descripcion"));
                 c.setGrado(g);
                 c.setAnio(rs.getInt("anio"));
                 lista.add(c);

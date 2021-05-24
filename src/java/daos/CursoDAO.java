@@ -44,7 +44,7 @@ public class CursoDAO implements ICurso{
     @Override
     public boolean update(Curso c) {
         try {
-            String sql = "update curso nombre = ? where id = ?";
+            String sql = "update curso set nombre = ? where id = ?";
             con = ConnectionDB.newInstanceDB().getCon();
             ps = con.prepareStatement(sql);
             ps.setString(1, c.getNombre());
