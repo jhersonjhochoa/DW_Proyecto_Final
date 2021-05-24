@@ -125,7 +125,7 @@ public class SeccionServlet extends HttpServlet {
                 sDAO.delete(id);
                 deleted = true;
             } else {
-                request.setAttribute("error_detail", "No se puede eliminar la sección por que tiene alumnos matroculados.");
+                request.setAttribute("error_detail", "No se puede eliminar la sección por que tiene alumnos matriculados.");
             }
             request.setAttribute("deleted", deleted);
         }

@@ -68,17 +68,17 @@
             </c:if>
             <c:if test="${saved}">
                 <div class="alert alert-success" role="alert">
-                    Sección agregada correctamente.
+                    Curso agregado correctamente.
                 </div>
             </c:if>
             <c:if test="${updated}">
                 <div class="alert alert-success" role="alert">
-                    Sección actualizada correctamente.
+                    Curso actualizado correctamente.
                 </div>
             </c:if>
             <c:if test="${deleted}">
                 <div class="alert alert-success" role="alert">
-                    Sección eliminada correctamente.
+                    Curso eliminado correctamente.
                 </div>
             </c:if>
             <c:if test="${cursos.size() == 0}">
