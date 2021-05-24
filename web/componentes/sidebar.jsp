@@ -40,7 +40,7 @@
             <a href="${pageContext.request.getContextPath()}" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
-                  Dashboard <c:out value="${modulo}" />
+                  Dashboard
               </p>
             </a>
           </li>
@@ -58,7 +58,7 @@
 
           <li class="nav-item">
             <a href="Curso" class="nav-link <c:if test="${modulo == '/Curso'}">active</c:if>">
-              <i class="nav-icon fas fa-users"></i>
+              <i class="nav-icon fas fa-file-contract"></i>
               <p>
                 Cursos
               </p>
@@ -67,7 +67,7 @@
                     
           <li class="nav-item">
             <a href="Seccion" class="nav-link <c:if test="${modulo == '/Seccion'}">active</c:if>">
-              <i class="nav-icon fas fa-users"></i>
+              <i class="nav-icon fas fa-columns"></i>
               <p>
                 Secciones
               </p>
@@ -76,7 +76,7 @@
 
           <li class="nav-item">
             <a href="AlumnoSeccion" class="nav-link <c:if test="${modulo == '/AlumnoSeccion'}">active</c:if>">
-              <i class="nav-icon fas fa-users"></i>
+              <i class="nav-icon fas fa-user-plus"></i>
               <p>
                 Agregar alumno a sección
               </p>
@@ -85,7 +85,7 @@
           
           <li class="nav-item">
             <a href="SeccionCurso" class="nav-link <c:if test="${modulo == '/SeccionCurso'}">active</c:if>">
-              <i class="nav-icon fas fa-users"></i>
+              <i class="nav-icon fas fa-folder-plus"></i>
               <p>
                 Agregar curso a sección
               </p>
@@ -98,7 +98,7 @@
           
           <li class="nav-item">
             <a href="Evaluacion" class="nav-link <c:if test="${modulo == '/Evaluacion'}">active</c:if>">
-              <i class="nav-icon fas fa-users"></i>
+              <i class="nav-icon fas fa-pencil-alt"></i>
               <p>
                 Evaluaciones
               </p>
