@@ -10,6 +10,7 @@ import java.util.ArrayList;
 /**
  *
  * @author Jhonatan
+ * @param <T>
  */
 public interface ICRUD<T> {
     boolean insert(T t);
@@ -18,3 +19,4 @@ public interface ICRUD<T> {
     T selectById (int id);
     ArrayList<T> selectAll();
 }
+

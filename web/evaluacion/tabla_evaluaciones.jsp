@@ -57,10 +57,10 @@ Mostrando resultados de <b><c:out value="${sc.getSeccion().getFullDescripcion()}
             </c:forEach>
       </tbody>
     </table>
-    <form id="formCurrentValues">
-        <input type="hidden" name="id_sc" value="${sc.getId()}">
-    </form>
     La sumatoria de las evaluaciones que no son bonus deben ser del 100%.<br>
     Actualmente las tareas suman <b><c:out value="${suma_porcentaje}"/>%</b> y los bonus <b><c:out value="${suma_bonus}"/>%</b></b>.
     <hr class="my-1">
 </c:if>
+<form id="formCurrentValues">
+    <input type="hidden" name="id_sc" value="${sc.getId()}">
+</form>

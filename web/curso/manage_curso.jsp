@@ -14,10 +14,10 @@
       <div class="modal-header">
           <h4 class="modal-title">
               <c:if test="${action == 'add'}">
-                  Agregar Sección
+                  Agregar Curso
               </c:if>
               <c:if test="${action == 'update'}">
-                  Editar Sección
+                  Editar Curso
               </c:if>
           </h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">

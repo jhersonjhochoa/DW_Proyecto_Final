@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="modulo" value="${requestScope['javax.servlet.forward.servlet_path'].toString()}" />
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="#" class="brand-link">
@@ -38,7 +40,7 @@
             <a href="${pageContext.request.getContextPath()}" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
-                Dashboard
+                  Dashboard <c:out value="${modulo}" />
               </p>
             </a>
           </li>
@@ -46,7 +48,7 @@
           <li class="nav-header">ADMINISTRACIÓN</li>
 
           <li class="nav-item">
-            <a href="Usuario" class="nav-link">
+            <a href="Usuario" class="nav-link <c:if test="${modulo == '/Usuario'}">active</c:if>">
               <i class="nav-icon fas fa-users"></i>
               <p>
                 Usuarios
@@ -55,7 +57,7 @@
           </li>
 
           <li class="nav-item">
-            <a href="Curso" class="nav-link">
+            <a href="Curso" class="nav-link <c:if test="${modulo == '/Curso'}">active</c:if>">
               <i class="nav-icon fas fa-users"></i>
               <p>
                 Cursos
@@ -64,7 +66,7 @@
           </li>
                     
           <li class="nav-item">
-            <a href="Seccion" class="nav-link">
+            <a href="Seccion" class="nav-link <c:if test="${modulo == '/Seccion'}">active</c:if>">
               <i class="nav-icon fas fa-users"></i>
               <p>
                 Secciones
@@ -73,7 +75,7 @@
           </li>
 
           <li class="nav-item">
-            <a href="AlumnoSeccion" class="nav-link">
+            <a href="AlumnoSeccion" class="nav-link <c:if test="${modulo == '/AlumnoSeccion'}">active</c:if>">
               <i class="nav-icon fas fa-users"></i>
               <p>
                 Agregar alumno a sección
@@ -82,7 +84,7 @@
           </li>
           
           <li class="nav-item">
-            <a href="SeccionCurso" class="nav-link">
+            <a href="SeccionCurso" class="nav-link <c:if test="${modulo == '/SeccionCurso'}">active</c:if>">
               <i class="nav-icon fas fa-users"></i>
               <p>
                 Agregar curso a sección
@@ -95,7 +97,7 @@
           <li class="nav-header">ÁREA DOCENTE</li>
           
           <li class="nav-item">
-            <a href="Evaluacion" class="nav-link">
+            <a href="Evaluacion" class="nav-link <c:if test="${modulo == '/Evaluacion'}">active</c:if>">
               <i class="nav-icon fas fa-users"></i>
               <p>
                 Evaluaciones
