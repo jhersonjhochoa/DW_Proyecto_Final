@@ -7,6 +7,7 @@ package servlets;
 
 import daos.AlumnoSeccionDAO;
 import daos.RolUsuarioDAO;
+import daos.SeccionCursoDAO;
 import daos.UsuarioDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import models.RolUsuario;
 import models.Usuario;
 import models_relation.AlumnoSeccion;
+import models_relation.SeccionCurso;
 
 /**
  *
@@ -32,6 +34,7 @@ public class UsuarioServlet extends HttpServlet {
     UsuarioDAO uDAO = new UsuarioDAO();
     RolUsuarioDAO ruDAO = new RolUsuarioDAO();
     AlumnoSeccionDAO asDAO = new AlumnoSeccionDAO();
+    SeccionCursoDAO scDAO = new SeccionCursoDAO();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -117,12 +120,17 @@ public class UsuarioServlet extends HttpServlet {
         } else if (action.equals("delete")) { // update
             int id = Integer.parseInt(request.getParameter("id"));
             ArrayList<AlumnoSeccion> lista_as = asDAO.selectByAlumno(id);
+            ArrayList<SeccionCurso> lista_sc = scDAO.selectByDocente(id);
             boolean deleted = false;
-            if (lista_as.isEmpty()) {
+            if (lista_as.isEmpty() && lista_sc.isEmpty()) {
                 uDAO.delete(id);
                 deleted = true;
             } else {
-                request.setAttribute("error_detail", "No se puede eliminar el alumno por que está matriculado en una o más secciones.");
+                if (!lista_as.isEmpty()) {
+                    request.setAttribute("error_detail", "No se puede eliminar el alumno por que está matriculado en una o más secciones.");
+                } else if (!lista_sc.isEmpty()) {
+                    request.setAttribute("error_detail", "No se puede eliminar el docente por que está asignado en una o más secciones.");
+                }
             }
             request.setAttribute("deleted", deleted);
         }

@@ -15,5 +15,6 @@ import models_relation.SeccionCurso;
 public interface ISeccionCurso extends ICRUD<SeccionCurso>{
     ArrayList<SeccionCurso> selectByCurso(int id_curso);
     ArrayList<SeccionCurso> selectBySeccion(int id_seccion);
+    ArrayList<SeccionCurso> selectByDocente(int id_docente);
     SeccionCurso selectBySeccionCurso(int id_seccion, int id_curso);
 }
