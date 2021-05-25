@@ -6,6 +6,7 @@
 package servlets;
 
 import daos.CursoDAO;
+import daos.EvaluacionDAO;
 import daos.RolUsuarioDAO;
 import daos.SeccionCursoDAO;
 import daos.SeccionDAO;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import models.Curso;
+import models.Evaluacion;
 import models.RolUsuario;
 import models.Seccion;
 import models.Usuario;
@@ -36,6 +38,7 @@ public class SeccionCursoServlet extends HttpServlet {
     SeccionDAO sDAO = new SeccionDAO();
     CursoDAO cDAO = new CursoDAO();
     SeccionCursoDAO scDAO = new SeccionCursoDAO();
+    EvaluacionDAO eDAO = new EvaluacionDAO();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -144,8 +147,13 @@ public class SeccionCursoServlet extends HttpServlet {
             }
         } else if (action.equals("delete")) { // update
             int id = Integer.parseInt(request.getParameter("id"));
-            request.setAttribute("deleted", true);
-            scDAO.delete(id);
+            List<Evaluacion> lista_ev = eDAO.selectBySc(id);
+            if (lista_ev.isEmpty()) {
+                request.setAttribute("deleted", true);
+                scDAO.delete(id);
+            } else {
+                request.setAttribute("error_detail", "No se puede desvincular el curso de esta sección por que ya tiene evaluaciones asignadas.");
+            }
         }
         request.setAttribute("redirect", "getCursos");
         processRequest(request, response);
